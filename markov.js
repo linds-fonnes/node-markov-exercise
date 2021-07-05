@@ -17,13 +17,40 @@ class MarkovMachine {
    *  {"the": ["cat", "hat"], "cat": ["in"], "in": ["the"], "hat": [null]} */
 
   makeChains() {
-    // TODO
+    let chain = {} ;
+    
+    for (let i = 0; i < this.words.length; i++){
+      let word = this.words[i]
+      if(!chain[word]){
+        chain[word] = []
+      }
+      if(this.words[i + 1]){
+        chain[word].push(this.words[i + 1])
+      } else {
+        chain[word].push(null)
+      }
+    }
+    console.log(chain)
+    this.chain = chain;
   }
 
-
+  randomNum(keys){
+    return Math.floor(Math.random() * keys.length);
+  }
   /** return random text from chains */
 
   makeText(numWords = 100) {
-    // TODO
-  }
+    let keys = Array.from(Object.keys(this.chain));
+    let key = keys[this.randomNum(keys)]
+    let output = [];
+
+    while (output.length < numWords && key !== null){
+      output.push(key)
+      key = keys[this.randomNum(keys)]
+    }
+    console.log(output)
+    return output.join(" ")
 }
+}
+
+module.exports = { MarkovMachine }
